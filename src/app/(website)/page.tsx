@@ -1,7 +1,8 @@
 export default function Home(){
     return(
-        <div>
-            <h1 className="px-10 border border-green-500">Homezssszz</h1>
+        <div className="px-5 border border-black-500">
+            <h1>Hardcoded HomePage</h1>
+            <p>This is the hardcoded homepage</p>
         </div>
     )
 }

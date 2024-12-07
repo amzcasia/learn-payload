@@ -32,9 +32,11 @@ export interface Config {
   };
   globals: {
     header: Header;
+    footer: Footer;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
   user: User & {
@@ -108,12 +110,41 @@ export interface Page {
   name: string;
   slug: string;
   layout?:
-    | {
-        content?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'textBlock';
-      }[]
+    | (
+        | {
+            title: string;
+            subtitle: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'cover';
+          }
+        | {
+            content: {
+              root: {
+                type: string;
+                children: {
+                  type: string;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'richText';
+          }
+        | {
+            image: string | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'image';
+          }
+      )[]
     | null;
   updatedAt: string;
   createdAt: string;
@@ -222,10 +253,25 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        textBlock?:
+        cover?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              id?: T;
+              blockName?: T;
+            };
+        richText?:
           | T
           | {
               content?: T;
+              id?: T;
+              blockName?: T;
+            };
+        image?:
+          | T
+          | {
+              image?: T;
               id?: T;
               blockName?: T;
             };
@@ -271,14 +317,66 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
-  logo?: (string | null) | Media;
+  brand: {
+    name: string;
+    logo?: (string | null) | Media;
+  };
   nav?:
     | {
         label?: string | null;
         link?: string | null;
+        subpages?:
+          | {
+              label?: string | null;
+              link?: string | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  callToAction?: {
+    ctaText?: string | null;
+    link?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: string;
+  brand?: string | null;
+  contactInfo?: {
+    sectionText?: string | null;
+    address?: {
+      addressIcon?: (string | null) | Media;
+      addressText?: string | null;
+    };
+    contactNum?: {
+      contactNumIcon?: (string | null) | Media;
+      contactNumList?:
+        | {
+            number?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+  };
+  ctaBlock?: {
+    title?: string | null;
+    ctaButtons?:
+      | {
+          Button?: {
+            buttonLabel?: string | null;
+            link?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -287,13 +385,79 @@ export interface Header {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  logo?: T;
+  brand?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+      };
   nav?:
     | T
     | {
         label?: T;
         link?: T;
+        subpages?:
+          | T
+          | {
+              label?: T;
+              link?: T;
+              id?: T;
+            };
         id?: T;
+      };
+  callToAction?:
+    | T
+    | {
+        ctaText?: T;
+        link?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  brand?: T;
+  contactInfo?:
+    | T
+    | {
+        sectionText?: T;
+        address?:
+          | T
+          | {
+              addressIcon?: T;
+              addressText?: T;
+            };
+        contactNum?:
+          | T
+          | {
+              contactNumIcon?: T;
+              contactNumList?:
+                | T
+                | {
+                    number?: T;
+                    id?: T;
+                  };
+            };
+      };
+  ctaBlock?:
+    | T
+    | {
+        title?: T;
+        ctaButtons?:
+          | T
+          | {
+              Button?:
+                | T
+                | {
+                    buttonLabel?: T;
+                    link?: T;
+                  };
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

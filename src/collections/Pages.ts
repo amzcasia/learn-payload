@@ -1,3 +1,6 @@
+import { Cover } from "@/blocks/CoverBlock/CoverSchema";
+import { Image } from "@/blocks/ImageBlock/ImageSchema";
+import { RichText } from "@/blocks/RichTextBlock/RichTextSchema";
 import { CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig = {
@@ -5,7 +8,7 @@ export const Pages: CollectionConfig = {
     fields: [
         {
             name:'name',
-            label: 'slug',
+            label: 'Name',
             type: 'text',
             required: true,
         },
@@ -22,18 +25,11 @@ export const Pages: CollectionConfig = {
             name: 'layout',
             label: 'Layout',
             type: 'blocks',
-            blocks: [{
-                slug: 'textBlock',
-                labels: {
-                    singular: 'Text Block',
-                    plural: 'Text Blocks',
-                },
-                fields: [{
-                    name: 'content',
-                    label: 'Content',
-                    type: 'textarea'
-                }]
-            }],
+            blocks: [
+                Cover,
+                RichText,
+                Image,
+            ],
         },
         
     ]
