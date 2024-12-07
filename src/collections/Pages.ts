@@ -14,26 +14,27 @@ export const Pages: CollectionConfig = {
             label:'Slug',
             type: 'text',
             required: true,
-            // admin: {
-            //     position: 'sidebar'
-            // }
-        }
-
-        // {
-        //     name: 'slug',
-        //     label: 'Slug',
-        //     type: 'text',
-        //     admin: {
-        //         position: 'sidebar',
-        //     },
-        //     required: true,
-        // },
-        // {
-        //     name: 'layout',
-        //     label: 'Layout',
-        //     type: 'blocks',
-        //     blocks: []
-        // }
+            admin: {
+                position: 'sidebar'
+            }
+        },
+        {
+            name: 'layout',
+            label: 'Layout',
+            type: 'blocks',
+            blocks: [{
+                slug: 'textBlock',
+                labels: {
+                    singular: 'Text Block',
+                    plural: 'Text Blocks',
+                },
+                fields: [{
+                    name: 'content',
+                    label: 'Content',
+                    type: 'textarea'
+                }]
+            }],
+        },
         
     ]
 }
